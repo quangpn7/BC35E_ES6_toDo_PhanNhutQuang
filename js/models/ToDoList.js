@@ -95,7 +95,6 @@ export class ToDoList {
 
     this.done.push(item);
     this.removeItem(item.id, "uncompleted");
-    console.log(this.toDo);
   }
   markUndo(id) {
     let item = this.done.find((item) => {
