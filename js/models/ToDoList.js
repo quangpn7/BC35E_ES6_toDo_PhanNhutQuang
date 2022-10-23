@@ -24,7 +24,6 @@ export class ToDoList {
               </li>
         `;
       }
-      console.log("Lại chạy vào đây");
     }
     document.querySelector(selectorToDo).innerHTML = toDoContentHTML;
     //DONE LIST
@@ -38,7 +37,7 @@ export class ToDoList {
           <button class="remove" onclick="removeItem(${item.id},'completed')">
             <i class="fas fa-trash-alt"></i>
           </button>
-          <button class="complete">
+          <button class="complete" onclick="markUndo(${item.id}, 'completed')">
             <i class="fas fa-check-circle"></i>
           </button>
         </div>
@@ -65,33 +64,25 @@ export class ToDoList {
     }
     this.renderContent(this.toDo, "#todo", this.done, "#completed");
   }
-
   //push new work
   addNew(item) {
     this.toDo.push(item);
     this.renderContent(this.toDo, "#todo", this.done, "#completed");
     this.saveStorage();
+    document.querySelector("selector");
   }
   //remove
   removeItem(id, status) {
     if (status === "uncompleted") {
       let index = this.toDo.findIndex((item) => {
-        item.id === id;
+        return item.id == id;
       });
-      if (index === 0) {
-        this.toDo.splice(index, 0);
-      } else {
-        this.toDo.splice(index, 1);
-      }
+      this.toDo.splice(index, 1);
     } else {
       let index = this.done.findIndex((item) => {
-        item.id === id;
+        return item.id == id;
       });
-      if (index === 0) {
-        this.done.splice(index, 0);
-      } else {
-        this.done.splice(index, 1);
-      }
+      this.done.splice(index, 1);
     }
     this.renderContent(this.toDo, "#todo", this.done, "#completed");
     this.saveStorage();
@@ -101,10 +92,40 @@ export class ToDoList {
     let item = this.toDo.find((item) => {
       return item.id === id;
     });
-    console.log(item);
 
     this.done.push(item);
     this.removeItem(item.id, "uncompleted");
     console.log(this.toDo);
+  }
+  markUndo(id) {
+    let item = this.done.find((item) => {
+      return item.id === id;
+    });
+    this.toDo.push(item);
+    this.removeItem(item.id, "completed");
+  }
+  //Sort
+  sortToDo(value) {
+    if (value === true) {
+      //a-z
+      this.toDo.sort((item1, item2) => {
+        let item1Str = item1.content.toLocaleLowerCase().trim();
+        let item2Str = item2.content.toLocaleLowerCase().trim();
+        if (item1Str < item2Str) {
+          return -1;
+        }
+      });
+    } else {
+      //z-a
+      this.toDo.sort((item1, item2) => {
+        let item1Str = item1.content.toLocaleLowerCase().trim();
+        let item2Str = item2.content.toLocaleLowerCase().trim();
+        if (item1Str > item2Str) {
+          return -1;
+        }
+      });
+    }
+    this.renderContent(this.toDo, "#todo", this.done, "#completed");
+    this.saveStorage();
   }
 }

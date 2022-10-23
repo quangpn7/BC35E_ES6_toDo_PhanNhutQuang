@@ -9,6 +9,8 @@ document.querySelector("#addItem").onclick = function () {
   item.id = toDoList.toDo.length + 1;
   item.content = document.querySelector("#newTask").value;
   toDoList.addNew(item);
+  document.querySelector("#newTask").value = "";
+  document.querySelector("#newTask").focus();
 };
 
 window.removeItem = (id, status) => {
@@ -17,4 +19,12 @@ window.removeItem = (id, status) => {
 
 window.markDone = (id) => {
   toDoList.markdDone(id);
+};
+
+window.markUndo = (id) => {
+  toDoList.markUndo(id);
+};
+
+window.sort = (value) => {
+  toDoList.sortToDo(value);
 };
