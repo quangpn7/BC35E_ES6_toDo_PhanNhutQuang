@@ -2,9 +2,9 @@ export class ToDoList {
   toDo = [];
   done = [];
 
-  //function
+  //METHOD
 
-  //render
+  //RENDER
   renderContent(arrTodo, selectorToDo, arrDone, selectorDone) {
     //TO DO LIST
     let toDoContentHTML = "";
@@ -47,14 +47,15 @@ export class ToDoList {
     }
     document.querySelector(selectorDone).innerHTML = doneContentHTML;
   }
-  //save local
+  //LOCAL STORAGE
+  //SAVE
   saveStorage() {
     let toDoList = JSON.stringify(this.toDo);
     localStorage.setItem("toDoList", toDoList);
     let doneList = JSON.stringify(this.done);
     localStorage.setItem("doneList", doneList);
   }
-  //load local
+  //LOAD
   loadStorage() {
     if (localStorage.getItem("toDoList")) {
       this.toDo = JSON.parse(localStorage.getItem("toDoList"));
@@ -64,14 +65,15 @@ export class ToDoList {
     }
     this.renderContent(this.toDo, "#todo", this.done, "#completed");
   }
-  //push new work
+
+  //ADD NEW TASK
   addNew(item) {
     this.toDo.push(item);
     this.renderContent(this.toDo, "#todo", this.done, "#completed");
     this.saveStorage();
     document.querySelector("selector");
   }
-  //remove
+  //REMOVE TASK (BOTH toDo AND done)
   removeItem(id, status) {
     if (status === "uncompleted") {
       let index = this.toDo.findIndex((item) => {
@@ -87,15 +89,16 @@ export class ToDoList {
     this.renderContent(this.toDo, "#todo", this.done, "#completed");
     this.saveStorage();
   }
-  //moving status
-  markdDone(id) {
+  //CHANGE TASK STAGE
+  //toDo to done
+  markDone(id) {
     let item = this.toDo.find((item) => {
       return item.id === id;
     });
-
     this.done.push(item);
     this.removeItem(item.id, "uncompleted");
   }
+  //done
   markUndo(id) {
     let item = this.done.find((item) => {
       return item.id === id;
